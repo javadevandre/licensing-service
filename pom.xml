@@ -12,7 +12,7 @@
 	<artifactId>licensing-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>licensing-service</name>
-	<description>O-stock Licencing Service</description>
+	<description>O-stock Licensing Service</description>
 	<properties>
 		<java.version>11</java.version>
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
