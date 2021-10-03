@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  licensing-service:
+    image: ostock/licensing-service:0.0.1-SNAPSHOT
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+    networks:
+      backend:
+        aliases:
+          - "license-service"
+
+networks:
+  backend:
+    driver: bridge
