@@ -28,7 +28,7 @@ public class LicenseController {
 	private LicenseService licenseService;
 
 	@PostMapping("/{licenseId}")
-	public ResponseEntity<String> createLicense(
+	public ResponseEntity<License> createLicense(
 			@RequestHeader(value = "Accept-Language", required = false) Locale locale,
 			@PathVariable("organizationId") String organizationId,
 			@RequestBody License license) {
@@ -37,11 +37,12 @@ public class LicenseController {
 	
 	@GetMapping("/{licenseId}")
 	public ResponseEntity<License> readLicense(
+			@RequestHeader(value = "Accept-Language", required = false) Locale locale,
 			@PathVariable("organizationId") String organizationId,
 			@PathVariable("licenseId") String licenseId) {
-		License license = licenseService.getLicense(licenseId, organizationId);
+		License license = licenseService.getLicense(licenseId, organizationId, locale);
 		license.add(
-				linkTo(methodOn(LicenseController.class).readLicense(organizationId, license.getLicenseId()))
+				linkTo(methodOn(LicenseController.class).readLicense(null, organizationId, license.getLicenseId()))
 						.withSelfRel(),
 				linkTo(methodOn(LicenseController.class).createLicense(null, organizationId, license))
 						.withRel("createLicense"),
@@ -53,7 +54,7 @@ public class LicenseController {
 	}
 	
 	@PutMapping("/{licenseId}")
-	public ResponseEntity<String> updateLicense(
+	public ResponseEntity<License> updateLicense(
 			@RequestHeader(value = "Accept-Language", required = false) Locale locale,
 			@PathVariable("organizationId") String organizationId,
 			@RequestBody License license) {
