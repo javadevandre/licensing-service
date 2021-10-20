@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.optimagrowth.license.config.ServiceConfig;
 import com.optimagrowth.license.model.License;
+import com.optimagrowth.license.model.Organization;
 import com.optimagrowth.license.repository.LicenseRepository;
+import com.optimagrowth.license.service.client.OrganizationClient;
 
 @Service
 public class LicenseService {
@@ -21,17 +23,23 @@ public class LicenseService {
 
 	@Autowired
 	private LicenseRepository licenseRepository;
+	
+	@Autowired OrganizationClient organizationClient;
 
 	public License createLicense(License license, String organizationId, Locale locale) {
 		License savedLicense = licenseRepository.save(license);
 		return savedLicense.withComment(config.getProperty());
 	}
 
-	public License getLicense(String licenseId, String organizationId, Locale locale) {
+	public License readLicense(String licenseId, String organizationId, Locale locale) {
 		License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
 		if (license == null) {
 			throw new IllegalArgumentException(String.format(
 				messageSource.getMessage("license.read.error.message", null, locale), licenseId, organizationId));
+		}
+		Organization organization = organizationClient.getOrganization(organizationId);
+		if (organization != null) {
+			license.setOrganization(organization);
 		}
 		return license.withComment(config.getProperty());
 	}

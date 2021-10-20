@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -12,7 +13,7 @@ import lombok.EqualsAndHashCode;
 
 @Data @EqualsAndHashCode(callSuper=true)
 @Entity
-@Table(name = "TB_LICENSE")
+@Table(name = "tb_license")
 public class License extends RepresentationModel<License> {
 	@Id
 	@Column(name = "license_id", nullable = false)
@@ -30,6 +31,9 @@ public class License extends RepresentationModel<License> {
 	private String description;
 
 	private String comment;
+	
+	@Transient
+	private Organization organization;
 	
 	public License withComment(String comment) {
 		setComment(comment);

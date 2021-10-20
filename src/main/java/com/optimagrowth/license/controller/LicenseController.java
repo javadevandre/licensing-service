@@ -40,7 +40,7 @@ public class LicenseController {
 			@RequestHeader(value = "Accept-Language", required = false) Locale locale,
 			@PathVariable("organizationId") String organizationId,
 			@PathVariable("licenseId") String licenseId) {
-		License license = licenseService.getLicense(licenseId, organizationId, locale);
+		License license = licenseService.readLicense(licenseId, organizationId, locale);
 		license.add(
 				linkTo(methodOn(LicenseController.class).readLicense(null, organizationId, license.getLicenseId()))
 						.withSelfRel(),
