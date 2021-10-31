@@ -8,17 +8,18 @@ import com.optimagrowth.license.model.Organization;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
-@FeignClient("organization-service")
+@FeignClient("api-gateway-server")
 @CircuitBreaker(name = "organization-service", fallbackMethod = "organizationServiceFallback")
 public interface OrganizationClient {
 	
-	@GetMapping(value = "/v1/organization/{organizationId}", consumes = "application/json")
+	@GetMapping(value = "organization-service/v1/organization/{organizationId}", consumes = "application/json")
 	Organization getOrganization(@PathVariable("organizationId") String organizationId);
 	
 	default Organization organizationServiceFallback(String organizationId, Throwable t) {
 		Organization fallbackOrganization = new Organization();
 		fallbackOrganization.setOrganizationId(organizationId);
 		fallbackOrganization.setName("No organization information currently available");
+		fallbackOrganization.setContactName(t.getMessage());
 		return fallbackOrganization;
 	}
 
